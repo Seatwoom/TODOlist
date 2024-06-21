@@ -1,24 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import ListTD from "./listTD";
+import InputTD from "./inputTD";
+import "./App.css";
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50 px;
+  padding: 20 px;
+`;
 
 function App() {
+  const [toDos, setToDos] = useState(() => {
+    const storedToDos = localStorage.getItem("toDos");
+    return storedToDos ? JSON.parse(storedToDos) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("toDos", JSON.stringify(toDos));
+  }, [toDos]);
+
+  const addTD = (td) => setToDos([...toDos, { text: td, status: false }]);
+
+  const toggleTD = (num) => {
+    const newTD = [...toDos];
+    newTD[num].status = !newTD[num].status;
+    setToDos(newTD);
+    newTD.sort((a, b) => {
+      if (a.status && !b.status) return 1;
+      if (!a.status && b.status) return -1;
+      return 0;
+    });
+  };
+
+  const deleteTD = (num) => {
+    const newTD = [...toDos];
+    newTD.splice(num, 1);
+    setToDos(newTD);
+  };
+  const editTD = (num, newText) => {
+    const newToDos = [...toDos];
+    newToDos[num].text = newText;
+    setToDos(newToDos);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <h1>To Do List</h1>
+      <InputTD addTD={addTD}></InputTD>
+      <ListTD
+        toDos={toDos}
+        toggleTD={toggleTD}
+        deleteTD={deleteTD}
+        editTD={editTD}
+      />
+    </Container>
   );
 }
 
