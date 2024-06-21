@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircle,
@@ -17,23 +17,27 @@ const ToDoComponent = styled.li`
   border-radius: 5px;
   text-decoration: ${(props) => (props.status ? "line-through" : "none")};
 `;
+
 const Text = styled.span`
   font-size: 15px;
   margin-left: 5px;
   flex-grow: 1;
   cursor: ${(props) => (props.isEditing ? "auto" : "pointer")};
 `;
+
 const IconComponent = styled.div`
   display: flex;
 `;
+
 const CheckIcon = styled(FontAwesomeIcon)`
   transition: color 0.5s;
   margin-left: 5px;
-  cursor: ${(props) => (props.isEditing ? "auto" : "pointer")};
+  cursor: ${(props) => (props.isEditing ? "not-allowed" : "pointer")};
 `;
+
 const ActionIcon = styled(FontAwesomeIcon)`
   margin-left: 5px;
-  cursor: pointer;
+  cursor: ${(props) => (props.isEditing ? "not-allowed" : "pointer")};
 `;
 
 const EditInput = styled.input`
@@ -43,14 +47,12 @@ const EditInput = styled.input`
   border-radius: 3px;
 `;
 
-function TD({ td, toggleTD, deleteTD, num, editTD }) {
-  const [isEditing, setIsEditing] = useState(false);
+function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
   const [editText, setEditText] = useState(td.text);
 
   const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-    if (!isEditing) {
-      setEditText(td.text);
+    if (isEditing === null) {
+      setIsEditing(num);
     }
   };
 
@@ -60,7 +62,7 @@ function TD({ td, toggleTD, deleteTD, num, editTD }) {
 
   const handleEditSave = () => {
     editTD(num, editText);
-    setIsEditing(false);
+    setIsEditing(null);
   };
 
   const handleToggle = () => {
@@ -75,44 +77,28 @@ function TD({ td, toggleTD, deleteTD, num, editTD }) {
     }
   };
 
-  const handleClick = () => {
-    if (!isEditing) {
-      toggleTD(num);
-    }
-  };
-
   return (
     <ToDoComponent status={td.status}>
       <IconComponent>
-        <FontAwesomeIcon
-          icon={faTrash}
-          color="#d4d4d4"
-          onClick={handleDelete}
-          style={{ cursor: isEditing ? "not-allowed" : "pointer" }}
-        />
-        {isEditing ? (
-          <ActionIcon
-            icon={faSave}
-            color="#d4d4d4"
-            onClick={handleEditSave}
-            style={{ cursor: "pointer" }}
-          />
+        <ActionIcon icon={faTrash} color="#d4d4d4" onClick={handleDelete} />
+        {isEditing === num ? (
+          <ActionIcon icon={faSave} color="#d4d4d4" onClick={handleEditSave} />
         ) : (
           <ActionIcon
             icon={faEdit}
             color="#d4d4d4"
             onClick={handleEditToggle}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: isEditing !== null ? "not-allowed" : "pointer" }}
           />
         )}
       </IconComponent>
       <CheckIcon
         icon={td.status ? faCheckCircle : faCircle}
         color={td.status ? "green" : "#d4d4d4"}
-        onClick={handleClick}
-        isEditing={isEditing}
+        onClick={handleToggle}
+        isEditing={isEditing !== null}
       />
-      {isEditing ? (
+      {isEditing === num ? (
         <EditInput
           type="text"
           value={editText}
@@ -120,7 +106,11 @@ function TD({ td, toggleTD, deleteTD, num, editTD }) {
           autoFocus
         />
       ) : (
-        <Text status={td.status} onClick={handleToggle} isEditing={isEditing}>
+        <Text
+          status={td.status}
+          onClick={handleToggle}
+          isEditing={isEditing !== null}
+        >
           {td.text}
         </Text>
       )}

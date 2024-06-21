@@ -8,8 +8,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50 px;
-  padding: 20 px;
+  margin-top: 50px;
+  padding: 20px;
 `;
 
 function App() {
@@ -17,6 +17,8 @@ function App() {
     const storedToDos = localStorage.getItem("toDos");
     return storedToDos ? JSON.parse(storedToDos) : [];
   });
+
+  const [isEditing, setIsEditing] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("toDos", JSON.stringify(toDos));
@@ -40,20 +42,24 @@ function App() {
     newTD.splice(num, 1);
     setToDos(newTD);
   };
+
   const editTD = (num, newText) => {
     const newToDos = [...toDos];
     newToDos[num].text = newText;
     setToDos(newToDos);
   };
+
   return (
     <Container>
       <h1>To Do List</h1>
-      <InputTD addTD={addTD}></InputTD>
+      <InputTD addTD={addTD} />
       <ListTD
         toDos={toDos}
         toggleTD={toggleTD}
         deleteTD={deleteTD}
         editTD={editTD}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
       />
     </Container>
   );
