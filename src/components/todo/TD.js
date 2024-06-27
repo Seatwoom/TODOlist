@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircle,
   faCheckCircle,
@@ -8,6 +7,11 @@ import {
   faEdit,
   faSave,
 } from "@fortawesome/free-solid-svg-icons";
+import Input from "../common/Input";
+import Text from "../common/Text";
+import IconComponent from "../common/IconComponent";
+import ActionIcon from "../common/ActionIcon";
+import CheckIcon from "../common/CheckIcon";
 
 const ToDoComponent = styled.li`
   display: flex;
@@ -18,29 +22,7 @@ const ToDoComponent = styled.li`
   text-decoration: ${(props) => (props.status ? "line-through" : "none")};
 `;
 
-const Text = styled.span`
-  font-size: 15px;
-  margin-left: 5px;
-  flex-grow: 1;
-  cursor: ${(props) => (props.isEditing ? "auto" : "pointer")};
-`;
-
-const IconComponent = styled.div`
-  display: flex;
-`;
-
-const CheckIcon = styled(FontAwesomeIcon)`
-  transition: color 0.5s;
-  margin-left: 5px;
-  cursor: ${(props) => (props.isEditing ? "not-allowed" : "pointer")};
-`;
-
-const ActionIcon = styled(FontAwesomeIcon)`
-  margin-left: 5px;
-  cursor: ${(props) => (props.isEditing ? "not-allowed" : "pointer")};
-`;
-
-const EditInput = styled.input`
+const EditInput = styled(Input)`
   font-size: 15px;
   margin-left: 5px;
   border: 1px solid #ccc;
@@ -80,15 +62,20 @@ function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
   return (
     <ToDoComponent status={td.status}>
       <IconComponent>
-        <ActionIcon icon={faTrash} color="#d4d4d4" onClick={handleDelete} />
+        <ActionIcon
+          icon={faTrash}
+          color={isEditing === null ? "#d4d4d4" : "lightgray"}
+          onClick={handleDelete}
+          style={{ cursor: isEditing === null ? "pointer" : "not-allowed" }}
+        />
         {isEditing === num ? (
           <ActionIcon icon={faSave} color="#d4d4d4" onClick={handleEditSave} />
         ) : (
           <ActionIcon
             icon={faEdit}
-            color="#d4d4d4"
+            color={isEditing === null ? "#d4d4d4" : "lightgray"}
             onClick={handleEditToggle}
-            style={{ cursor: isEditing !== null ? "not-allowed" : "pointer" }}
+            style={{ cursor: isEditing === null ? "pointer" : "not-allowed" }}
           />
         )}
       </IconComponent>

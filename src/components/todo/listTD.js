@@ -1,6 +1,6 @@
 import React from "react";
-import TD from "./TD";
 import styled from "styled-components";
+import TD from "./TD";
 
 const List = styled.ul`
   list-style: none;
@@ -17,10 +17,10 @@ function ListTD({
 }) {
   return (
     <List>
-      {toDos.map((td, num) => (
+      {toDos.map((td, index) => (
         <TD
-          key={num}
-          num={num}
+          key={index}
+          num={index}
           td={td}
           toggleTD={toggleTD}
           deleteTD={deleteTD}
