@@ -9,11 +9,16 @@ import PrivateRoute from "./components/auth/privateRoute";
 import Tasks from "./components/views/Tasks";
 import Login from "./components/views/Login";
 import Register from "./components/views/Register";
+import Cat from "./components/views/Cat";
+import CatDetailed from "./components/views/CatDetailed";
+import Session from "./components/views/Session";
+
 import "./index.css";
 
 function App() {
   return (
     <Router>
+      <Session timeout={300000} />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -22,6 +27,22 @@ function App() {
           element={
             <PrivateRoute>
               <Tasks />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cats"
+          element={
+            <PrivateRoute>
+              <Cat />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cat/:id"
+          element={
+            <PrivateRoute>
+              <CatDetailed />
             </PrivateRoute>
           }
         />
