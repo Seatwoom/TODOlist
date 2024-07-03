@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Input from "../common/Input";
-import Button from "../common/Button";
+import { Input, Button } from "../../styles/styles";
 
 const Form = styled.form`
   display: flex;

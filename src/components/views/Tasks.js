@@ -3,30 +3,12 @@ import styled from "styled-components";
 import InputTD from "../todo/inputTD";
 import ListTD from "../todo/listTD";
 import { getLocalStorage, setLocalStorage } from "../../utils/localStorage";
-import Container from "../layouts/Container";
-import LogoutButton from "../common/Logout";
+import { LogoutButton, Container, NavLinks } from "../../styles/styles";
 import { Link } from "react-router-dom";
 const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const NavLinks = styled.div`
-  position: absolute;
-  top: 60px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  a {
-    color: blue;
-    text-decoration: none;
-    margin-bottom: 10px;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
 
 const Tasks = () => {
   const currentUser = getLocalStorage("currentUser");

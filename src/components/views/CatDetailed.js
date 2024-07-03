@@ -12,8 +12,10 @@ const Container = styled.div`
 const Image = styled.img`
   width: 100%;
   height: auto;
+  max-height: 350px;
   border-radius: 10px;
   margin-bottom: 20px;
+  object-fit: contain;
 `;
 const CatDetailed = () => {
   const { id } = useParams();

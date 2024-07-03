@@ -7,11 +7,13 @@ import {
   faEdit,
   faSave,
 } from "@fortawesome/free-solid-svg-icons";
-import Input from "../common/Input";
-import Text from "../common/Text";
-import IconComponent from "../common/IconComponent";
-import ActionIcon from "../common/ActionIcon";
-import CheckIcon from "../common/CheckIcon";
+import {
+  Input,
+  Text,
+  IconComponent,
+  ActionIcon,
+  CheckIcon,
+} from "../../styles/styles";
 
 const ToDoComponent = styled.li`
   display: flex;

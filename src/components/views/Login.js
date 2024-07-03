@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Input from "../common/Input";
-import Button from "../common/Button";
-import StyledLink from "../common/StyledLink";
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-  padding: 20px;
-`;
+import { Input, Button, StyledLink, Container } from "../../styles/styles";
 
 const Login = () => {
   const [username, setUsername] = useState("");
