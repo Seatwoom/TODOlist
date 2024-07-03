@@ -9,11 +9,14 @@ const Register = () => {
 
   const handleRegister = () => {
     const users = JSON.parse(localStorage.getItem("users")) || {};
-
+    const newUser = {
+      password: password,
+      toDos: [],
+    };
     if (users[username]) {
       alert("Username already exists");
     } else if (username && password) {
-      users[username] = { password, toDos: [] };
+      users[username] = newUser;
       localStorage.setItem("users", JSON.stringify(users));
       alert("Successful registration");
       navigate("/login");

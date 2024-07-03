@@ -12,8 +12,8 @@ const Login = () => {
     const user = storedUsers[username];
 
     if (user && user.password === password) {
-      localStorage.setItem("currentUser", username);
-      localStorage.setItem("authenticated", "true");
+      localStorage.setItem("currentUser", JSON.stringify(username));
+      localStorage.setItem("authenticated", JSON.stringify(true));
       navigate("/tasks");
     } else {
       alert("Invalid login");
