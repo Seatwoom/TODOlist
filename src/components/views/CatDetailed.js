@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { CAT_API_URL } from "../../config";
 
 const Container = styled.div`
   max-width: 800px;
@@ -22,7 +23,7 @@ const CatDetailed = () => {
   const [cat, setCat] = useState(null);
 
   useEffect(() => {
-    fetch(`https://api.thecatapi.com/v1/images/${id}`)
+    fetch(`${CAT_API_URL}/images/${id}`)
       .then((response) => response.json())
       .then((data) => setCat(data))
       .catch((error) => console.error(error));

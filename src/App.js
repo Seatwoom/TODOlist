@@ -12,13 +12,14 @@ import Register from "./components/views/Register";
 import Cat from "./components/views/Cat";
 import CatDetailed from "./components/views/CatDetailed";
 import Session from "./components/views/Session";
+import { SESSION_TIMEOUT } from "./config";
 
 import "./index.css";
 
 function App() {
   return (
     <Router>
-      <Session timeout={300000} />
+      <Session timeout={SESSION_TIMEOUT} />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

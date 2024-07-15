@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, StyledLink, Container } from "../../styles/styles";
-
+import { API_BASE_URL } from "../../config";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || {};
-    const user = storedUsers[username];
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (user && user.password === password) {
-      localStorage.setItem("currentUser", JSON.stringify(username));
-      localStorage.setItem("authenticated", JSON.stringify(true));
+      if (!response.ok) {
+        return alert("Invalid login");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
       navigate("/tasks");
-    } else {
-      alert("Invalid login");
+    } catch (error) {
+      console.error(error);
+      alert("Login failed");
     }
   };
 

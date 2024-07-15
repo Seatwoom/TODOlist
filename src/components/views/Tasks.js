@@ -2,34 +2,58 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import InputTD from "../todo/inputTD";
 import ListTD from "../todo/listTD";
-import { getLocalStorage, setLocalStorage } from "../../utils/localStorage";
 import { LogoutButton, Container, NavLinks } from "../../styles/styles";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
+
 const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-
 const Tasks = () => {
-  const currentUser = getLocalStorage("currentUser");
-  const [toDos, setToDos] = useState(() => {
-    const users = getLocalStorage("users") || {};
-    return users[currentUser]?.toDos || [];
-  });
-
+  const [toDos, setToDos] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
 
   useEffect(() => {
-    const users = getLocalStorage("users") || {};
-    if (users[currentUser]) {
-      users[currentUser].toDos = toDos;
-      setLocalStorage("users", users);
+    const fetchTodos = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${API_BASE_URL}/tasks`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        const data = await response.json();
+        setToDos(data);
+      } catch (error) {
+        console.error("Failed to fetch todos", error);
+      }
+    };
+
+    fetchTodos();
+  }, []);
+
+  const saveTodos = async (todos) => {
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(`${API_BASE_URL}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({ todos }),
+      });
+    } catch (error) {
+      console.error("Failed to save todos", error);
     }
-  }, [toDos, currentUser]);
+  };
 
   const addTD = (text) => {
     const newTD = { text, status: false };
-    setToDos([...toDos, newTD]);
+    const newToDos = [...toDos, newTD];
+    setToDos(newToDos);
+    saveTodos(newToDos);
   };
 
   const toggleTD = (index) => {
@@ -37,28 +61,25 @@ const Tasks = () => {
     newToDos[index].status = !newToDos[index].status;
     newToDos.sort((a, b) => a.status - b.status);
     setToDos(newToDos);
+    saveTodos(newToDos);
   };
 
   const deleteTD = (index) => {
     const newToDos = [...toDos];
     newToDos.splice(index, 1);
     setToDos(newToDos);
+    saveTodos(newToDos);
   };
 
   const editTD = (index, newText) => {
     const newToDos = [...toDos];
     newToDos[index].text = newText;
     setToDos(newToDos);
+    saveTodos(newToDos);
   };
 
   const handleLogout = () => {
-    const users = getLocalStorage("users") || {};
-    if (users[currentUser]) {
-      users[currentUser].toDos = toDos;
-      setLocalStorage("users", users);
-    }
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("authenticated");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
 

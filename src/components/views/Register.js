@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, StyledLink, Container } from "../../styles/styles";
+import { API_BASE_URL } from "../../config";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || {};
-    const newUser = {
-      password: password,
-      toDos: [],
-    };
-    if (users[username]) {
-      alert("Username already exists");
-    } else if (username && password) {
-      users[username] = newUser;
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("Successful registration");
-      navigate("/login");
-    } else {
-      alert("Invalid registration");
+  const handleRegister = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        alert("Successful registration");
+        navigate("/login");
+      } else {
+        alert("Registration failed");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Registration failed");
     }
   };
 

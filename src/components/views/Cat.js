@@ -8,7 +8,7 @@ import {
   Card,
   Grid,
 } from "../../styles/styles";
-import { getLocalStorage, setLocalStorage } from "../../utils/localStorage";
+import { CAT_API_URL, API_BASE_URL } from "../../config";
 
 const Image = styled.img`
   display: block;
@@ -18,43 +18,71 @@ const Image = styled.img`
 `;
 
 const CatCards = () => {
-  const currentUser = getLocalStorage("currentUser");
-  const [cats, setCats] = useState(() => {
-    const users = getLocalStorage("users") || {};
-    return users[currentUser]?.cats || [];
-  });
+  const [cats, setCats] = useState([]);
   const navigate = useNavigate();
+  const fetchCats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${CAT_API_URL}/images/search?limit=6&has_breeds=1`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch cats from external API");
+      }
+      const data = await response.json();
+      setCats(data);
+      const saveResponse = await fetch(`${API_BASE_URL}/cats`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({ cats: data }),
+      });
+      if (!saveResponse.ok) {
+        throw new Error("Failed to save cats on the server");
+      }
+    } catch (error) {
+      console.error("Error fetching cats:", error);
+    }
+  };
 
   useEffect(() => {
-    if (cats.length === 0) {
-      fetchCats();
-    }
-  }, []);
-  const fetchCats = () => {
-    fetch("https://api.thecatapi.com/v1/images/search?limit=6&has_breeds=1")
-      .then((response) => response.json())
-      .then((data) => {
-        setCats(data);
-        const users = getLocalStorage("users") || {};
-        if (users[currentUser]) {
-          users[currentUser].cats = data;
-          setLocalStorage("users", users);
+    const token = localStorage.getItem("token");
+    const loadCats = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/cats`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        const data = await response.json();
+        if (data.length === 0) {
+          fetchCats();
+        } else {
+          setCats(data);
         }
-      })
-      .catch((error) => console.error(error));
-  };
+      } catch (error) {
+        console.error("Error loading cats:", error);
+      }
+    };
+
+    loadCats();
+  }, []);
 
   const handleCardClick = (id) => {
     navigate(`/cat/${id}`);
   };
+
   const handleRandomClick = () => {
     fetchCats();
   };
+
   const handleLogout = () => {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("authenticated");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
+
   return (
     <>
       <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
