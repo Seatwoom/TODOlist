@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import InputTD from "../todo/inputTD";
-import ListTD from "../todo/listTD";
-import { LogoutButton, Container, NavLinks } from "../../styles/styles";
+import InputTD from "../components/todo/inputTD";
+import ListTD from "../components/todo/listTD";
+import { LogoutButton, Container, NavLinks, Header } from "../styles/styles";
 import { Link } from "react-router-dom";
-import { API_BASE_URL } from "../../config";
+import { API_BASE_URL } from "../config";
 
 const Title = styled.h2`
   margin-bottom: 20px;
@@ -84,23 +84,26 @@ const Tasks = () => {
   };
 
   return (
-    <Container>
-      <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
-      <NavLinks>
-        <Link to="/cats">Cat Cards</Link>
-      </NavLinks>
-      <Title>To-Do List</Title>
-      <InputTD addTD={addTD} />
-      <ListTD
-        toDos={toDos}
-        toggleTD={toggleTD}
-        deleteTD={deleteTD}
-        editTD={editTD}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-      />
-    </Container>
+    <div>
+      <Header>
+        <NavLinks>
+          <Link to="/cats">Cat Cards</Link>
+        </NavLinks>
+        <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
+      </Header>
+      <Container>
+        <Title>To-Do List</Title>
+        <InputTD addTD={addTD} />
+        <ListTD
+          toDos={toDos}
+          toggleTD={toggleTD}
+          deleteTD={deleteTD}
+          editTD={editTD}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
+      </Container>
+    </div>
   );
 };
-
 export default Tasks;

@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, StyledLink, Container } from "../../styles/styles";
-import { API_BASE_URL } from "../../config";
+import { Input, Button, StyledLink, Container } from "../styles/styles";
+import { API_BASE_URL } from "../config";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!username || !password) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
@@ -18,7 +24,8 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        return alert("Invalid login");
+        const errorData = await response.json();
+        return alert(errorData.error || "Invalid login");
       }
 
       const data = await response.json();

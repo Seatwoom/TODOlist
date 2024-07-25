@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { SESSION_TIMEOUT } from "../../config";
-import { ModalContent, ModalOverlay, Button } from "../../styles/styles";
+import { SESSION_TIMEOUT } from "../config";
+import { ModalContent, ModalOverlay, Button } from "../styles/styles";
 
 const Session = ({ timeout = SESSION_TIMEOUT }) => {
   const [modal, setModal] = useState(false);

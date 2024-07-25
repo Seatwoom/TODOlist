@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, StyledLink, Container } from "../../styles/styles";
-import { API_BASE_URL } from "../../config";
+import { Input, Button, StyledLink, Container } from "../styles/styles";
+import { API_BASE_URL } from "../config";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -22,17 +23,19 @@ const Register = () => {
         alert("Successful registration");
         navigate("/login");
       } else {
-        alert("Registration failed");
+        const data = await response.json();
+        setError(data.error || "Registration failed");
       }
     } catch (error) {
       console.error(error);
-      alert("Registration failed");
+      setError("Registration failed");
     }
   };
 
   return (
     <Container>
       <h2>Register</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <Input
         type="text"
         placeholder="Username"

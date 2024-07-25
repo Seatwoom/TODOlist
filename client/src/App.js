@@ -6,12 +6,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import PrivateRoute from "./components/auth/privateRoute";
-import Tasks from "./components/views/Tasks";
-import Login from "./components/views/Login";
-import Register from "./components/views/Register";
-import Cat from "./components/views/Cat";
-import CatDetailed from "./components/views/CatDetailed";
-import Session from "./components/views/Session";
+import Tasks from "./views/Tasks";
+import Login from "./views/Login";
+import Register from "./views/Register";
+import Cat from "./views/Cat";
+import CatDetailed from "./views/CatDetailed";
+import Session from "./views/Session";
 import { SESSION_TIMEOUT } from "./config";
 
 import "./index.css";

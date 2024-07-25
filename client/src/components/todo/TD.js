@@ -45,8 +45,13 @@ function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
   };
 
   const handleEditSave = () => {
-    editTD(num, editText);
-    setIsEditing(null);
+    if (editText.trim() === "") {
+      deleteTD(num);
+      setIsEditing(null);
+    } else {
+      editTD(num, editText);
+      setIsEditing(null);
+    }
   };
 
   const handleToggle = () => {

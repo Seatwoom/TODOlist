@@ -36,22 +36,20 @@ export const Input = styled.input`
 `;
 
 export const LogoutButton = styled.button`
-  position: absolute;
-  top: 1em;
-  right: 1em;
   background: none;
   color: red;
   border: none;
   cursor: pointer;
   font-size: 1em;
+  padding: 0;
+  margin: 0;
 
   &:hover {
     text-decoration: underline;
   }
 
   @media (max-width: 600px) {
-    top: 0.5em;
-    right: 0.5em;
+    margin-top: 1em;
   }
 `;
 
@@ -99,17 +97,12 @@ export const Container = styled.div`
   padding: 20px;
 `;
 export const NavLinks = styled.div`
-  position: absolute;
-  top: 3em;
-  right: 1em;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  gap: 1em;
 
   a {
     color: blue;
     text-decoration: none;
-    margin-bottom: 0.5em;
 
     &:hover {
       text-decoration: underline;
@@ -117,18 +110,22 @@ export const NavLinks = styled.div`
   }
 
   @media (max-width: 600px) {
-    top: 2em;
-    right: 0.5em;
+    margin-top: 1em;
   }
 `;
 
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 10px;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 600px) {
+    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export const Card = styled.div`
@@ -144,7 +141,51 @@ export const Card = styled.div`
   justify-content: center;
   align-items: center;
   height: 250px;
+
   @media (max-width: 600px) {
-    margin-top: 3em;
+    margin-top: 3 px;
+  }
+`;
+
+export const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+export const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+`;
+export const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow-y: auto;
+  position: relative;
+
+  button {
+    position: absolute;
+    bottom: 10px;
+  }
+
+  @media (max-width: 600px) {
+    button {
+      position: static;
+      margin-bottom: 15px;
+    }
   }
 `;

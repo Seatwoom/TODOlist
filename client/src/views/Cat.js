@@ -7,15 +7,11 @@ import {
   NavLinks,
   Card,
   Grid,
-} from "../../styles/styles";
-import { CAT_API_URL, API_BASE_URL } from "../../config";
-
-const Image = styled.img`
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  height: auto;
-`;
+  Header,
+  PageContainer,
+  Content,
+} from "../styles/styles";
+import { CAT_API_URL, API_BASE_URL } from "../config";
 
 const CatCards = () => {
   const [cats, setCats] = useState([]);
@@ -84,25 +80,31 @@ const CatCards = () => {
   };
 
   return (
-    <>
-      <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
-      <NavLinks>
-        <Link to="/tasks">To-Do List</Link>
-      </NavLinks>
-      <Grid>
-        {cats.map((cat) => {
-          const breed = cat.breeds && cat.breeds[0];
-          return (
-            <Card key={cat.id} onClick={() => handleCardClick(cat.id)}>
-              <Image src={cat.url} alt={breed?.name || "Cat"} />
-            </Card>
-          );
-        })}
-      </Grid>
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <PageContainer>
+      <Header>
+        <NavLinks>
+          <Link to="/tasks">To-Do List</Link>
+        </NavLinks>
+        <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
+      </Header>
+      <Content>
+        <Grid>
+          {cats.map((cat) => {
+            const breed = cat.breeds && cat.breeds[0];
+            return (
+              <Card key={cat.id} onClick={() => handleCardClick(cat.id)}>
+                <img
+                  src={cat.url}
+                  alt={breed?.name || "Cat"}
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </Card>
+            );
+          })}
+        </Grid>
         <Button onClick={handleRandomClick}>Random</Button>
-      </div>
-    </>
+      </Content>
+    </PageContainer>
   );
 };
 
