@@ -16,17 +16,11 @@ const loginRoutes = require("./controllers/loginController");
 const taskRoutes = require("./controllers/taskController");
 const catRoutes = require("./controllers/catController");
 
-createConnection({
-  type: process.env.DB_TYPE,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  synchronize: true,
-  logging: true,
-  entities: ["entity/*.js"],
-})
+const ormConfig = require("./ormconfig.json");
+const env = process.env.NODE_ENV || "development";
+const connectionOptions = ormConfig[env];
+
+createConnection(connectionOptions)
   .then(async (connection) => {
     const userRepository = connection.getRepository(User);
 
