@@ -16,7 +16,9 @@ module.exports = (app, userRepository) => {
         where: { username },
       });
       if (existingUser) {
-        return res.status(400).json({ error: "Username already taken" });
+        return res.status(400).json({
+          error: "Username already taken",
+        });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,14 +29,11 @@ module.exports = (app, userRepository) => {
       user.todos = [];
       user.cats = [];
       await userRepository.save(user);
-      res.status(201).json(user);
+
+      res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
-      if (error.code === "23505") {
-        res.status(400).json({ error: "Username already taken" });
-      } else {
-        console.error("Database error:", error);
-        res.status(500).json({ error: "Database error" });
-      }
+      console.error("Database error:", error);
+      res.status(500).json({ error: "Database error" });
     }
   });
 };

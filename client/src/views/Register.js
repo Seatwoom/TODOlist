@@ -1,55 +1,46 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, StyledLink, Container } from "../styles/styles";
-import { API_BASE_URL } from "../config";
+import { registerUser } from "../api/authAPI";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+    if (!username || !password) {
+      alert("Please fill in all fields.");
+      return;
+    }
 
-      if (response.ok) {
-        alert("Successful registration");
-        navigate("/login");
-      } else {
-        const data = await response.json();
-        setError(data.error || "Registration failed");
-      }
+    try {
+      await registerUser(username, password);
+      navigate("/login");
     } catch (error) {
-      console.error(error);
-      setError("Registration failed");
+      setErrorMessage(error.message);
     }
   };
 
   return (
     <Container>
       <h2>Register</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       <Input
         type="text"
-        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
       />
       <Input
         type="password"
-        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
       />
       <Button onClick={handleRegister}>Register</Button>
-      <StyledLink to="/login">Login to your account</StyledLink>
+      <StyledLink to="/login">Already registered? Log in here</StyledLink>
     </Container>
   );
 };

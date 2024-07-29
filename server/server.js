@@ -4,12 +4,14 @@ const cors = require("cors");
 require("reflect-metadata");
 const { createConnection } = require("typeorm");
 const { User } = require("./entity/User.js");
+const APICatRoutes = require("./controllers/APICatController");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/external-cats", APICatRoutes);
 
 const registerRoutes = require("./controllers/registerController");
 const loginRoutes = require("./controllers/loginController");

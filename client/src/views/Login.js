@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, StyledLink, Container } from "../styles/styles";
-import { API_BASE_URL } from "../config";
+import { loginUser } from "../api/authAPI";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -15,42 +16,29 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        return alert(errorData.error || "Invalid login");
-      }
-
-      const data = await response.json();
+      const data = await loginUser(username, password);
       localStorage.setItem("token", data.token);
       navigate("/tasks");
     } catch (error) {
-      console.error(error);
-      alert("Login failed");
+      setErrorMessage(error.message);
     }
   };
 
   return (
     <Container>
       <h2>Login</h2>
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       <Input
         type="text"
-        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
       />
       <Input
         type="password"
-        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
       />
       <Button onClick={handleLogin}>Login</Button>
       <StyledLink to="/register">Not registered yet? Do it now</StyledLink>

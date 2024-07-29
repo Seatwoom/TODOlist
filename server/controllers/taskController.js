@@ -11,22 +11,28 @@ module.exports = (app) => {
       const user = await userRepository.findOne({
         where: { id: req.user.userId },
       });
-      res.json(user.todos);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json(user.todos || []);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching tasks:", error);
       res.status(500).json({ error: "Database error" });
     }
   });
-
   app.post("/tasks", authenticateToken, async (req, res) => {
     const { todos } = req.body;
 
     try {
-      await userRepository.update(req.user.userId, { todos });
+      console.log("Updating user tasks:", req.user.userId, todos);
+      const updateQuery = await userRepository.update(req.user.userId, {
+        todos,
+      });
+      console.log("Update query:", updateQuery);
       res.sendStatus(200);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Database error" });
+      console.error("Error saving tasks:", error);
+      res.status(500).json({ error: "Database error: " + error.message });
     }
   });
 };

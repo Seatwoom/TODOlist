@@ -1,4 +1,6 @@
-const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Task } from "./Task";
+import { Cat } from "./Cat";
 
 @Entity()
 export class User {
@@ -12,8 +14,14 @@ export class User {
   password!: string;
 
   @Column("jsonb", { default: [] })
-  todos!: object[];
+  todos!: any[];
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks!: Task[];
 
   @Column("jsonb", { default: [] })
-  cats!: object[];
+  cats!: any[];
+
+  @OneToMany(() => Cat, (cat) => cat.user)
+  catsEntity!: Cat[];
 }

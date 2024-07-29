@@ -9,41 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Task = void 0;
 const typeorm_1 = require("typeorm");
-const Task_1 = require("./Task");
-const Cat_1 = require("./Cat");
-let User = class User {
+const User_1 = require("./User");
+let Task = class Task {
 };
-exports.User = User;
+exports.Task = Task;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "username", void 0);
+], Task.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
+], Task.prototype, "text", void 0);
 __decorate([
-    (0, typeorm_1.Column)("jsonb", { default: [] }),
-    __metadata("design:type", Array)
-], User.prototype, "todos", void 0);
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Task.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Task_1.Task, (task) => task.user),
-    __metadata("design:type", Array)
-], User.prototype, "tasks", void 0);
-__decorate([
-    (0, typeorm_1.Column)("jsonb", { default: [] }),
-    __metadata("design:type", Array)
-], User.prototype, "cats", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Cat_1.Cat, (cat) => cat.user),
-    __metadata("design:type", Array)
-], User.prototype, "catsEntity", void 0);
-exports.User = User = __decorate([
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.tasks),
+    __metadata("design:type", User_1.User)
+], Task.prototype, "user", void 0);
+exports.Task = Task = __decorate([
     (0, typeorm_1.Entity)()
-], User);
+], Task);

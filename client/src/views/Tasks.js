@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import InputTD from "../components/todo/inputTD";
 import ListTD from "../components/todo/listTD";
+import { fetchTasks, saveTasks } from "../api/tasksAPI";
 import { LogoutButton, Container, NavLinks, Header } from "../styles/styles";
 import { Link } from "react-router-dom";
-import { API_BASE_URL } from "../config";
 
 const Title = styled.h2`
   margin-bottom: 20px;
@@ -18,12 +18,7 @@ const Tasks = () => {
     const fetchTodos = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/tasks`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        const data = await response.json();
+        const data = await fetchTasks(token);
         setToDos(data);
       } catch (error) {
         console.error("Failed to fetch todos", error);
@@ -36,14 +31,7 @@ const Tasks = () => {
   const saveTodos = async (todos) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`${API_BASE_URL}/tasks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({ todos }),
-      });
+      await saveTasks(todos, token);
     } catch (error) {
       console.error("Failed to save todos", error);
     }
@@ -106,4 +94,5 @@ const Tasks = () => {
     </div>
   );
 };
+
 export default Tasks;

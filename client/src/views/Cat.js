@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import styled from "styled-components";
+import {
+  fetchCatsFromAPI,
+  saveCatsToServer,
+  loadCatsFromServer,
+} from "../api/catsAPI";
 import {
   LogoutButton,
   Button,
@@ -11,55 +15,44 @@ import {
   PageContainer,
   Content,
 } from "../styles/styles";
-import { CAT_API_URL, API_BASE_URL } from "../config";
 
 const CatCards = () => {
   const [cats, setCats] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   const fetchCats = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${CAT_API_URL}/images/search?limit=6&has_breeds=1`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch cats from external API");
-      }
-      const data = await response.json();
+      const data = await fetchCatsFromAPI();
       setCats(data);
-      const saveResponse = await fetch(`${API_BASE_URL}/cats`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({ cats: data }),
-      });
-      if (!saveResponse.ok) {
-        throw new Error("Failed to save cats on the server");
-      }
+      await saveCatsToServer(data);
     } catch (error) {
+      setError("Error fetching cats. Please try again.");
       console.error("Error fetching cats:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const loadCats = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await fetch(`${API_BASE_URL}/cats`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        const data = await response.json();
+        const data = await loadCatsFromServer();
         if (data.length === 0) {
-          fetchCats();
+          await fetchCats();
         } else {
           setCats(data);
         }
       } catch (error) {
+        setError("Error loading cats. Please try again.");
         console.error("Error loading cats:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -88,21 +81,27 @@ const CatCards = () => {
         <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
       </Header>
       <Content>
-        <Grid>
-          {cats.map((cat) => {
-            const breed = cat.breeds && cat.breeds[0];
-            return (
-              <Card key={cat.id} onClick={() => handleCardClick(cat.id)}>
-                <img
-                  src={cat.url}
-                  alt={breed?.name || "Cat"}
-                  style={{ width: "100%", height: "auto" }}
-                />
-              </Card>
-            );
-          })}
-        </Grid>
-        <Button onClick={handleRandomClick}>Random</Button>
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        {!loading && !error && (
+          <>
+            <Grid>
+              {cats.map((cat) => {
+                const breed = cat.breeds && cat.breeds[0];
+                return (
+                  <Card key={cat.id} onClick={() => handleCardClick(cat.id)}>
+                    <img
+                      src={cat.url}
+                      alt={breed?.name || "Cat"}
+                      style={{ width: "100%", height: "auto" }}
+                    />
+                  </Card>
+                );
+              })}
+            </Grid>
+            <Button onClick={handleRandomClick}>Random</Button>
+          </>
+        )}
       </Content>
     </PageContainer>
   );
