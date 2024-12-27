@@ -27,7 +27,7 @@ export const saveTasks = async (tasks, token) => {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({ todos: tasks }),
+      body: JSON.stringify({ tasks: tasks }),
     });
 
     if (!response.ok) {

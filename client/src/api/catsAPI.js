@@ -19,10 +19,17 @@ export const loadCatsFromServer = async () => {
       Authorization: `${token}`,
     },
   });
-  if (!response.ok) {
-    throw new Error("Failed to load cats");
+
+  const text = await response.text();
+  console.log("Server response:", text);
+
+  try {
+    const data = JSON.parse(text);
+    return data;
+  } catch (error) {
+    console.error("Failed to parse response:", error);
+    throw new Error("Failed to parse JSON response");
   }
-  return await response.json();
 };
 
 export const saveCatsToServer = async (cats) => {

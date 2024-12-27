@@ -29,8 +29,9 @@ __decorate([
 ], Task.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.tasks),
+    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
     __metadata("design:type", User_1.User)
 ], Task.prototype, "user", void 0);
 exports.Task = Task = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)("tasks")
 ], Task);

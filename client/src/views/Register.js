@@ -26,20 +26,28 @@ const Register = () => {
   return (
     <Container>
       <h2>Register</h2>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {errorMessage && (
+        <p data-testid="error-message" style={{ color: "red" }}>
+          {errorMessage}
+        </p>
+      )}
       <Input
+        data-testid="username-input"
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
       />
       <Input
+        data-testid="password-input"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <Button onClick={handleRegister}>Register</Button>
+      <Button data-testid="register-button" onClick={handleRegister}>
+        Register
+      </Button>
       <StyledLink to="/login">Already registered? Log in here</StyledLink>
     </Container>
   );

@@ -20,12 +20,15 @@ function InputTD({ addTD }) {
   return (
     <Form onSubmit={handleInput}>
       <Input
+        data-testid="new-task-input"
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Add something"
       />
-      <Button type="submit">Add</Button>
+      <Button data-testid="add-task-button" type="submit">
+        Add
+      </Button>
     </Form>
   );
 }

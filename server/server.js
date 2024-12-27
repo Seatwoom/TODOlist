@@ -5,6 +5,7 @@ require("reflect-metadata");
 const { createConnection } = require("typeorm");
 const { User } = require("./entity/User.js");
 const APICatRoutes = require("./controllers/APICatController");
+const testController = require("./controllers/testController");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ createConnection(connectionOptions)
     loginRoutes(app, userRepository);
     taskRoutes(app);
     catRoutes(app);
+    testController(app);
 
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);

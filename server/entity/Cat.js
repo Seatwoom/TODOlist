@@ -28,7 +28,8 @@ __decorate([
     __metadata("design:type", Object)
 ], Cat.prototype, "breed", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.cats),
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.catsEntity),
+    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
     __metadata("design:type", User_1.User)
 ], Cat.prototype, "user", void 0);
 exports.Cat = Cat = __decorate([

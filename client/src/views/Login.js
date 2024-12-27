@@ -27,20 +27,28 @@ const Login = () => {
   return (
     <Container>
       <h2>Login</h2>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {errorMessage && (
+        <p data-testid="error-message" style={{ color: "red" }}>
+          {errorMessage}
+        </p>
+      )}
       <Input
+        data-testid="username-input"
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
       />
       <Input
+        data-testid="password-input"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <Button onClick={handleLogin}>Login</Button>
+      <Button data-testid="login-button" onClick={handleLogin}>
+        Login
+      </Button>
       <StyledLink to="/register">Not registered yet? Do it now</StyledLink>
     </Container>
   );

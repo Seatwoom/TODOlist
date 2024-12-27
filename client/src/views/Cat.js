@@ -26,9 +26,13 @@ const CatCards = () => {
     setLoading(true);
     setError(null);
     try {
+      setCats([]);
+      await saveCatsToServer([]);
+
       const data = await fetchCatsFromAPI();
-      setCats(data);
       await saveCatsToServer(data);
+      const updatedCats = await loadCatsFromServer();
+      setCats(updatedCats);
     } catch (error) {
       setError("Error fetching cats. Please try again.");
       console.error("Error fetching cats:", error);
@@ -36,7 +40,6 @@ const CatCards = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     const loadCats = async () => {
       setLoading(true);
@@ -63,8 +66,9 @@ const CatCards = () => {
     navigate(`/cat/${id}`);
   };
 
-  const handleRandomClick = () => {
-    fetchCats();
+  const handleRandomClick = async () => {
+    setCats([]); 
+    await fetchCats(); 
   };
 
   const handleLogout = () => {

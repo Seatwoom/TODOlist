@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 import { User } from "./User";
 
 @Entity("cats")
@@ -12,6 +18,7 @@ export class Cat {
   @Column("jsonb", { default: {} })
   breed!: object;
 
-  @ManyToOne(() => User, (user) => user.cats)
+  @ManyToOne(() => User, (user) => user.catsEntity)
+  @JoinColumn({ name: "user_id" })
   user!: User;
 }

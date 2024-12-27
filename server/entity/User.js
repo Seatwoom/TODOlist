@@ -29,17 +29,9 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)("jsonb", { default: [] }),
-    __metadata("design:type", Array)
-], User.prototype, "todos", void 0);
-__decorate([
     (0, typeorm_1.OneToMany)(() => Task_1.Task, (task) => task.user),
     __metadata("design:type", Array)
 ], User.prototype, "tasks", void 0);
-__decorate([
-    (0, typeorm_1.Column)("jsonb", { default: [] }),
-    __metadata("design:type", Array)
-], User.prototype, "cats", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => Cat_1.Cat, (cat) => cat.user),
     __metadata("design:type", Array)

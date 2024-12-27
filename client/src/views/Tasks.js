@@ -10,60 +10,118 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
+const LoadingText = styled.p`
+  text-align: center;
+  color: #666;
+`;
+
 const Tasks = () => {
   const [toDos, setToDos] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchTodos = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const token = localStorage.getItem("token");
         const data = await fetchTasks(token);
-        setToDos(data);
+        if (mounted) {
+          setToDos(Array.isArray(data) ? data : []);
+        }
       } catch (error) {
         console.error("Failed to fetch todos", error);
+        if (mounted) {
+          setError("Failed to load tasks");
+        }
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchTodos();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const saveTodos = async (todos) => {
+  const saveTodosWithRetry = async (newTodos) => {
+    let attempts = 3;
+    while (attempts > 0) {
+      try {
+        const token = localStorage.getItem("token");
+        await saveTasks(newTodos, token);
+        return true;
+      } catch (error) {
+        attempts--;
+        if (attempts === 0) {
+          console.error("Failed to save tasks after retries:", error);
+          return false;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
+    return false;
+  };
+
+  const addTD = async (text) => {
     try {
-      const token = localStorage.getItem("token");
-      await saveTasks(todos, token);
+      const newTD = { text, status: false };
+      const newToDos = [...toDos, newTD];
+      setToDos(newToDos);
+      await saveTodosWithRetry(newToDos);
     } catch (error) {
-      console.error("Failed to save todos", error);
+      console.error("Error adding task:", error);
+      setError("Failed to add task");
     }
   };
 
-  const addTD = (text) => {
-    const newTD = { text, status: false };
-    const newToDos = [...toDos, newTD];
-    setToDos(newToDos);
-    saveTodos(newToDos);
+  const toggleTD = async (index) => {
+    try {
+      const newToDos = [...toDos];
+      newToDos[index] = {
+        ...newToDos[index],
+        status: !newToDos[index].status,
+      };
+      setToDos(newToDos);
+      await saveTodosWithRetry(newToDos);
+    } catch (error) {
+      console.error("Error toggling task:", error);
+      setError("Failed to update task");
+    }
   };
 
-  const toggleTD = (index) => {
-    const newToDos = [...toDos];
-    newToDos[index].status = !newToDos[index].status;
-    newToDos.sort((a, b) => a.status - b.status);
-    setToDos(newToDos);
-    saveTodos(newToDos);
+  const deleteTD = async (index) => {
+    try {
+      const newToDos = toDos.filter((_, i) => i !== index);
+      setToDos(newToDos);
+      await saveTodosWithRetry(newToDos);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      setError("Failed to delete task");
+    }
   };
 
-  const deleteTD = (index) => {
-    const newToDos = [...toDos];
-    newToDos.splice(index, 1);
-    setToDos(newToDos);
-    saveTodos(newToDos);
-  };
-
-  const editTD = (index, newText) => {
-    const newToDos = [...toDos];
-    newToDos[index].text = newText;
-    setToDos(newToDos);
-    saveTodos(newToDos);
+  const editTD = async (index, newText) => {
+    try {
+      const newToDos = [...toDos];
+      newToDos[index] = {
+        ...newToDos[index],
+        text: newText,
+      };
+      setToDos(newToDos);
+      await saveTodosWithRetry(newToDos);
+    } catch (error) {
+      console.error("Error editing task:", error);
+      setError("Failed to edit task");
+    }
   };
 
   const handleLogout = () => {
@@ -71,25 +129,47 @@ const Tasks = () => {
     window.location.href = "/login";
   };
 
+  if (isLoading) {
+    return (
+      <Container>
+        <LoadingText>Loading tasks...</LoadingText>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <p>{error}</p>
+      </Container>
+    );
+  }
+
   return (
     <div>
       <Header>
         <NavLinks>
-          <Link to="/cats">Cat Cards</Link>
+          <Link to="/cats" data-testid="cats-link">
+            Cat Cards
+          </Link>
         </NavLinks>
-        <LogoutButton onClick={handleLogout}>Log out</LogoutButton>
+        <LogoutButton data-testid="logout-button" onClick={handleLogout}>
+          Log out
+        </LogoutButton>
       </Header>
       <Container>
         <Title>To-Do List</Title>
-        <InputTD addTD={addTD} />
-        <ListTD
-          toDos={toDos}
-          toggleTD={toggleTD}
-          deleteTD={deleteTD}
-          editTD={editTD}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-        />
+        <InputTD addTD={addTD} data-testid="new-task-input" />
+        <div data-testid="task-list">
+          <ListTD
+            toDos={toDos}
+            toggleTD={toggleTD}
+            deleteTD={deleteTD}
+            editTD={editTD}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+          />
+        </div>
       </Container>
     </div>
   );

@@ -13,14 +13,8 @@ export class User {
   @Column()
   password!: string;
 
-  @Column("jsonb", { default: [] })
-  todos!: any[];
-
   @OneToMany(() => Task, (task) => task.user)
   tasks!: Task[];
-
-  @Column("jsonb", { default: [] })
-  cats!: any[];
 
   @OneToMany(() => Cat, (cat) => cat.user)
   catsEntity!: Cat[];
