@@ -14,10 +14,10 @@
 
 ### Unit тести
 
-Результати в txt файлі :[results.txt](/todo-list/server/folder%20with%20tests/results.txt)
+Результати в txt файлі :[results.txt](server/folder%20with%20tests/results.txt)
 Розташування: `server/__tests__/controllers/`
 
-- [loginController.test.js](/todo-list/server/__tests__/controllers/loginController.test.js)
+- [loginController.test.js](server/__tests__/controllers/loginController.test.js)
   - Покриття 100%
   - Тестує всі основні сценарії:
     ```javascript
@@ -33,10 +33,10 @@
 
 ### Інтеграційні тести
 
-Результати в txt файлі :[results.txt](/todo-list/server/folder%20with%20tests/results.txt)
+Результати в txt файлі :[results.txt](server/folder%20with%20tests/results.txt)
 Розташування: `server/__tests__/integration/`
 
-- [auth.test.js](/todo-list/server/__tests__/integration/auth.test.js)
+- [auth.test.js](server/__tests__/integration/auth.test.js)
   - Налаштування тестового середовища:
     - тестова бд
     - Express
@@ -53,7 +53,7 @@
 
 Розташування: `e2e/cypress/e2e/`
 
-- [auth.cy.js](/todo-list/e2e/cypress/e2e/auth.cy.js)
+- [auth.cy.js](e2e/cypress/e2e/auth.cy.js)
   - Покриває повний потвк авторизації:
     ```javascript
     "Authentication Flow": {
@@ -64,7 +64,7 @@
       "should handle logout"
     }
     ```
-- [tasks.cy.js](/todo-list/e2e/cypress/e2e/tasks.cy.js)
+- [tasks.cy.js](e2e/cypress/e2e/tasks.cy.js)
   - Покриває управління задачами:
     ```javascript
     "Tasks Management": {
