@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Task } from "./Task";
-import { Cat } from "./Cat";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Task } from './Task';
+import { Cat } from './Cat';
 
 @Entity()
 export class User {

@@ -4,10 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import { User } from "./User";
+} from 'typeorm';
+import { User } from './User';
 
-@Entity("tasks")
+@Entity('tasks')
 export class Task {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -19,6 +19,6 @@ export class Task {
   status!: boolean;
 
   @ManyToOne(() => User, (user) => user.tasks)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 }

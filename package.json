@@ -1,0 +1,33 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "private": true,
+  "description": "This site is a React that combines a to-do list with the function of displaying random cat cards pulled from the API. The application includes user registration and login, session management, and the ability to save to-do lists and cat cards for each user in PostgreSQL. The backend is built on Express.js.",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "husky install",
+    "test:client": "cd client && npm test",
+    "test:server": "cd server && npm test",
+    "test:e2e": "cd e2e && npx cypress run",
+    "test": "npm run test:client && npm run test:server && npm run test:e2e"
+  },
+  "workspaces": [
+    "client",
+    "server",
+    "e2e"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "prettier": "^3.4.2"
+  }
+}

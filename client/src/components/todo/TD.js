@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   faCircle,
   faCheckCircle,
   faTrash,
   faEdit,
   faSave,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 import {
   Input,
   IconComponent,
   ActionIcon,
   CheckIcon,
-} from "../../styles/styles";
+} from '../../styles/styles';
 
 const ToDoComponent = styled.li`
   &.completed {
@@ -29,9 +29,9 @@ const ToDoComponent = styled.li`
 const TaskText = styled.span`
   flex-grow: 1;
   margin-left: 10px;
-  cursor: ${(props) => (props.isEditing ? "default" : "pointer")};
-  text-decoration: ${(props) => (props.status ? "line-through" : "none")};
-  color: ${(props) => (props.status ? "#888" : "#000")};
+  cursor: ${(props) => (props.isEditing ? 'default' : 'pointer')};
+  text-decoration: ${(props) => (props.status ? 'line-through' : 'none')};
+  color: ${(props) => (props.status ? '#888' : '#000')};
   /* Ensure text is visible */
   display: inline-block;
   min-height: 20px;
@@ -61,7 +61,7 @@ function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
   };
 
   const handleEditSave = () => {
-    if (editText.trim() === "") {
+    if (editText.trim() === '') {
       deleteTD(num);
     } else {
       editTD(num, editText);
@@ -84,15 +84,15 @@ function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
   return (
     <ToDoComponent
       data-testid={`task-${num}`}
-      className={td.status ? "completed" : ""}
+      className={td.status ? 'completed' : ''}
     >
       <IconComponent>
         <ActionIcon
           data-testid={`delete-button-${num}`}
           icon={faTrash}
-          color={isEditing === null ? "#d4d4d4" : "lightgray"}
+          color={isEditing === null ? '#d4d4d4' : 'lightgray'}
           onClick={handleDelete}
-          style={{ cursor: isEditing === null ? "pointer" : "not-allowed" }}
+          style={{ cursor: isEditing === null ? 'pointer' : 'not-allowed' }}
         />
         {isEditing === num ? (
           <ActionIcon
@@ -105,16 +105,16 @@ function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
           <ActionIcon
             data-testid={`edit-button-${num}`}
             icon={faEdit}
-            color={isEditing === null ? "#d4d4d4" : "lightgray"}
+            color={isEditing === null ? '#d4d4d4' : 'lightgray'}
             onClick={handleEditToggle}
-            style={{ cursor: isEditing === null ? "pointer" : "not-allowed" }}
+            style={{ cursor: isEditing === null ? 'pointer' : 'not-allowed' }}
           />
         )}
       </IconComponent>
       <CheckIcon
         data-testid={`task-checkbox-${num}`}
         icon={td.status ? faCheckCircle : faCircle}
-        color={td.status ? "green" : "#d4d4d4"}
+        color={td.status ? 'green' : '#d4d4d4'}
         onClick={handleToggle}
         isEditing={isEditing !== null}
       />
@@ -125,7 +125,7 @@ function TD({ td, toggleTD, deleteTD, num, editTD, isEditing, setIsEditing }) {
           value={editText}
           onChange={handleEditChange}
           onKeyPress={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === 'Enter') {
               handleEditSave();
             }
           }}
