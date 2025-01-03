@@ -5,6 +5,8 @@
   "description": "This site is a React that combines a to-do list with the function of displaying random cat cards pulled from the API. The application includes user registration and login, session management, and the ability to save to-do lists and cat cards for each user in PostgreSQL. The backend is built on Express.js.",
   "main": "index.js",
   "scripts": {
+    "start:server": "cd server && PORT=5000 node server.js",
+    "start:client": "cd client && PORT=3000 CI=true npm start",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
