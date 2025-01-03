@@ -84,16 +84,25 @@ jobs:
         run: |
           npm install -g wait-on
           npm install -g concurrently
-          cd $GITHUB_WORKSPACE/server && npm ci
-          cd $GITHUB_WORKSPACE/client && npm ci && npm install react-scripts
-          cd $GITHUB_WORKSPACE/e2e && npm ci
-      - name: Start services and run tests
+      - name: Install client deps
+        working-directory: ./client
+        run: npm ci
+      - name: Install server deps
+        working-directory: ./server
+        run: npm ci
+      - name: Install e2e deps
+        working-directory: ./e2e
+        run: npm ci
+      - name: Start services
         run: |
-          cd $GITHUB_WORKSPACE/server && PORT=5000 npm start &
-          cd $GITHUB_WORKSPACE/client && PORT=3000 CI=true npm start &
+          cd $GITHUB_WORKSPACE/server && npm start &
+          cd $GITHUB_WORKSPACE/client && CI=true npm start &
           wait-on -t 90000 http://localhost:5000 http://localhost:3000
-          cd $GITHUB_WORKSPACE/e2e && npx cypress run
+      - name: Run tests
+        working-directory: ./e2e
+        run: npx cypress run
         env:
+          POSTGRES_HOST: localhost
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 123
           POSTGRES_DB: postgres_test
