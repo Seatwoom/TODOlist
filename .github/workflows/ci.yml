@@ -74,7 +74,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    steps:
+     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
@@ -83,6 +83,6 @@ jobs:
         run: |
           npm install -g wait-on
           cd server && npm ci && PORT=5000 npm start &
-          cd ../client && npm ci && PORT=3000 npm start &
+          cd $GITHUB_WORKSPACE/client && npm ci && PORT=3000 npm start &
           wait-on http://localhost:5000 http://localhost:3000
-          cd ../e2e && npm ci && npx cypress run
+          cd $GITHUB_WORKSPACE/e2e && npm ci && npx cypress run
