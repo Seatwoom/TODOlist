@@ -80,15 +80,31 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+
       - name: Install dependencies
         run: |
-          npm install -g wait-on
           npm ci
-      - name: Start services
+          cd client && npm ci
+          cd ../server && npm ci
+          cd ../e2e && npm ci
+          npm install -g wait-on
+
+      - name: Install missing Babel dependency
+        working-directory: ./client
+        run: npm install --save-dev @babel/plugin-proposal-private-property-in-object
+
+      - name: Start server
         run: |
-          npm run start:server &
-          npm run start:client &
-          wait-on -t 120000 http://localhost:5000 http://localhost:3000
+          cd server
+          PORT=5000 node server.js &
+          wait-on -t 60000 http://localhost:5000
+
+      - name: Start client
+        run: |
+          cd client
+          PORT=3000 CI=true npm start &
+          wait-on -t 60000 http://localhost:3000
+
       - name: Run e2e tests
         working-directory: ./e2e
         run: npx cypress run
