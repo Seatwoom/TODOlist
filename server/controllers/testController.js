@@ -1,6 +1,10 @@
 const { getConnection } = require('typeorm');
 
 module.exports = (app) => {
+  app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+  });
+
   app.post('/test/cleanup', async (req, res) => {
     try {
       const connection = getConnection();

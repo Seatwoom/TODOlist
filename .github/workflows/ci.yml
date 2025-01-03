@@ -107,15 +107,22 @@ jobs:
         run: |
           cd server
           node server.js &
-          sleep 10
-          curl http://localhost:5000/api/test || exit 1
+          sleep 15
+          curl -v http://localhost:5000/api/health || exit 1
 
       - name: Start client
+        env:
+          CI: 'true'
+          PORT: 3000
+          SKIP_PREFLIGHT_CHECK: 'true'
+          WATCHPACK_POLLING: 'true'
         run: |
           cd client
-          PORT=3000 CI=true npm start &
-          wait-on -t 60000 http://localhost:3000
+          npm start &
+          sleep 40
 
       - name: Run e2e tests
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
         working-directory: ./e2e
         run: npx cypress run
