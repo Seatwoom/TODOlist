@@ -11,48 +11,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-
-      - name: Install root dependencies
+      - run: npm ci
+      - working-directory: ./client
         run: npm ci
-
-      - name: Install client dependencies
-        working-directory: ./client
+      - working-directory: ./server
         run: npm ci
-
-      - name: Install server dependencies
-        working-directory: ./server
-        run: npm ci
-
-      - name: Check formatting
-        run: npm run format:check
-
-      - name: Lint
-        run: npm run lint
+      - run: npm run format:check
+      - run: npm run lint
 
   test-client:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-
-      - name: Install dependencies
-        working-directory: ./client
-        run: npm ci
-
-      - name: Run tests
-        working-directory: ./client
-        run: npm test -- --watchAll=false
+      - working-directory: ./client
+        run: |
+          npm ci
+          npm test -- --watchAll=false
 
   test-server:
     runs-on: ubuntu-latest
@@ -73,28 +55,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-
-      - name: Install dependencies
-        working-directory: ./server
-        run: npm ci
-
-      - name: Run unit tests
-        working-directory: ./server
-        run: npm run test:unit
-
-      - name: Run integration tests
-        working-directory: ./server
-        run: npm run test:integration
-
-      - name: Run mutation tests
-        working-directory: ./server
-        run: npm run test:mutation
+      - working-directory: ./server
+        run: |
+          npm ci
+          npm run test:unit
+          npm run test:integration
+          npm run test:mutation
 
   e2e-tests:
     runs-on: ubuntu-latest
@@ -115,25 +85,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-
-      - name: Install e2e dependencies
-        working-directory: ./e2e
-        run: npm ci
-
-      - name: Install client dependencies
-        working-directory: ./client
-        run: npm ci
-
-      - name: Install server dependencies
-        working-directory: ./server
-        run: npm ci
-
-      - name: Run e2e tests
-        working-directory: ./e2e
-        run: npx cypress run
+      - run: npm install -g wait-on
+      - run: |
+          cd server && npm ci && npm start &
+          wait-on http://localhost:5000
+      - run: |
+          cd client && npm ci && npm start &
+          wait-on http://localhost:3000
+      - working-directory: ./e2e
+        run: |
+          npm ci
+          npx cypress run
