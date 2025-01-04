@@ -10,17 +10,19 @@
     "logging": true,
     "entities": ["entity/*.js"]
   },
+
   "production": {
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "postgres",
-    "password": "123",
-    "database": "postgres",
+    "type": "${DB_TYPE}",
+    "host": "${DB_HOST}",
+    "port": "${DB_PORT}",
+    "username": "${DB_USERNAME}",
+    "password": "${DB_PASSWORD}",
+    "database": "${DB_DATABASE}",
     "synchronize": true,
     "logging": false,
     "entities": ["entity/*.js"]
   },
+
   "test": {
     "type": "postgres",
     "host": "localhost",
