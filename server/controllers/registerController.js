@@ -1,14 +1,14 @@
-const bcrypt = require("bcrypt");
-const { User } = require("../entity/User.js");
+const bcrypt = require('bcrypt');
+const { User } = require('../entity/User.js');
 
 module.exports = (app, userRepository) => {
-  app.post("/register", async (req, res) => {
+  app.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
       return res
         .status(400)
-        .json({ error: "Username and password are required" });
+        .json({ error: 'Username and password are required' });
     }
 
     try {
@@ -17,7 +17,7 @@ module.exports = (app, userRepository) => {
       });
       if (existingUser) {
         return res.status(400).json({
-          error: "Username already taken",
+          error: 'Username already taken',
         });
       }
 
@@ -30,10 +30,10 @@ module.exports = (app, userRepository) => {
       user.cats = [];
       await userRepository.save(user);
 
-      res.status(201).json({ message: "User registered successfully" });
+      res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-      console.error("Database error:", error);
-      res.status(500).json({ error: "Database error" });
+      console.error('Database error:', error);
+      res.status(500).json({ error: 'Database error' });
     }
   });
 };

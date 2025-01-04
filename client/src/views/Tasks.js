@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import InputTD from "../components/todo/inputTD";
-import ListTD from "../components/todo/listTD";
-import { fetchTasks, saveTasks } from "../api/tasksAPI";
-import { LogoutButton, Container, NavLinks, Header } from "../styles/styles";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import InputTD from '../components/todo/inputTD';
+import ListTD from '../components/todo/listTD';
+import { fetchTasks, saveTasks } from '../api/tasksAPI';
+import { LogoutButton, Container, NavLinks, Header } from '../styles/styles';
+import { Link } from 'react-router-dom';
 
 const Title = styled.h2`
   margin-bottom: 20px;
@@ -28,15 +28,15 @@ const Tasks = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         const data = await fetchTasks(token);
         if (mounted) {
           setToDos(Array.isArray(data) ? data : []);
         }
       } catch (error) {
-        console.error("Failed to fetch todos", error);
+        console.error('Failed to fetch todos', error);
         if (mounted) {
-          setError("Failed to load tasks");
+          setError('Failed to load tasks');
         }
       } finally {
         if (mounted) {
@@ -56,13 +56,13 @@ const Tasks = () => {
     let attempts = 3;
     while (attempts > 0) {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         await saveTasks(newTodos, token);
         return true;
       } catch (error) {
         attempts--;
         if (attempts === 0) {
-          console.error("Failed to save tasks after retries:", error);
+          console.error('Failed to save tasks after retries:', error);
           return false;
         }
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -78,8 +78,8 @@ const Tasks = () => {
       setToDos(newToDos);
       await saveTodosWithRetry(newToDos);
     } catch (error) {
-      console.error("Error adding task:", error);
-      setError("Failed to add task");
+      console.error('Error adding task:', error);
+      setError('Failed to add task');
     }
   };
 
@@ -93,8 +93,8 @@ const Tasks = () => {
       setToDos(newToDos);
       await saveTodosWithRetry(newToDos);
     } catch (error) {
-      console.error("Error toggling task:", error);
-      setError("Failed to update task");
+      console.error('Error toggling task:', error);
+      setError('Failed to update task');
     }
   };
 
@@ -104,8 +104,8 @@ const Tasks = () => {
       setToDos(newToDos);
       await saveTodosWithRetry(newToDos);
     } catch (error) {
-      console.error("Error deleting task:", error);
-      setError("Failed to delete task");
+      console.error('Error deleting task:', error);
+      setError('Failed to delete task');
     }
   };
 
@@ -119,14 +119,14 @@ const Tasks = () => {
       setToDos(newToDos);
       await saveTodosWithRetry(newToDos);
     } catch (error) {
-      console.error("Error editing task:", error);
-      setError("Failed to edit task");
+      console.error('Error editing task:', error);
+      setError('Failed to edit task');
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   };
 
   if (isLoading) {

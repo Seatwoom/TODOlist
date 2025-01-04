@@ -4,10 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import { User } from "./User";
+} from 'typeorm';
+import { User } from './User';
 
-@Entity("cats")
+@Entity('cats')
 export class Cat {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -15,10 +15,10 @@ export class Cat {
   @Column()
   url!: string;
 
-  @Column("jsonb", { default: {} })
+  @Column('jsonb', { default: {} })
   breed!: object;
 
   @ManyToOne(() => User, (user) => user.catsEntity)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 }

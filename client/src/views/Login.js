@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Input, Button, StyledLink, Container } from "../styles/styles";
-import { loginUser } from "../api/authAPI";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Input, Button, StyledLink, Container } from '../styles/styles';
+import { loginUser } from '../api/authAPI';
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!username || !password) {
-      alert("Please fill in all fields.");
+      alert('Please fill in all fields.');
       return;
     }
 
     try {
       const data = await loginUser(username, password);
-      localStorage.setItem("token", data.token);
-      navigate("/tasks");
+      localStorage.setItem('token', data.token);
+      navigate('/tasks');
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -28,7 +28,7 @@ const Login = () => {
     <Container>
       <h2>Login</h2>
       {errorMessage && (
-        <p data-testid="error-message" style={{ color: "red" }}>
+        <p data-testid="error-message" style={{ color: 'red' }}>
           {errorMessage}
         </p>
       )}

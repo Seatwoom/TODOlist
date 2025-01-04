@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 export const ActionIcon = styled(FontAwesomeIcon)`
   margin-left: 5px;
-  cursor: ${(props) => (props.isEditing ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.isEditing ? 'not-allowed' : 'pointer')};
 `;
 
 export const Button = styled.button`
@@ -22,7 +22,7 @@ export const Button = styled.button`
 export const CheckIcon = styled(FontAwesomeIcon)`
   transition: color 0.5s;
   margin-left: 5px;
-  cursor: ${(props) => (props.isEditing ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.isEditing ? 'not-allowed' : 'pointer')};
 `;
 
 export const IconComponent = styled.div`
@@ -67,7 +67,7 @@ export const Text = styled.span`
   font-size: 15px;
   margin-left: 5px;
   flex-grow: 1;
-  cursor: ${(props) => (props.isEditing ? "auto" : "pointer")};
+  cursor: ${(props) => (props.isEditing ? 'auto' : 'pointer')};
 `;
 export const ModalOverlay = styled.div`
   position: fixed;

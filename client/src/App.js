@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
-import PrivateRoute from "./components/auth/privateRoute";
-import Tasks from "./views/Tasks";
-import Login from "./views/Login";
-import Register from "./views/Register";
-import Cat from "./views/Cat";
-import CatDetailed from "./views/CatDetailed";
-import Session from "./views/Session";
-import { SESSION_TIMEOUT } from "./config";
+} from 'react-router-dom';
+import PrivateRoute from './components/auth/privateRoute';
+import Tasks from './views/Tasks';
+import Login from './views/Login';
+import Register from './views/Register';
+import Cat from './views/Cat';
+import CatDetailed from './views/CatDetailed';
+import Session from './views/Session';
+import { SESSION_TIMEOUT } from './config';
 
-import "./index.css";
+import './index.css';
 
 function App() {
   return (

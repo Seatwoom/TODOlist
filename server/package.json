@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "jest",
     "test:unit": "jest NODE_ENV=test jest __tests__/controllers",
     "test:integration": "jest NODE_ENV=test jest __tests__/integration --runInBand --detectOpenHandles",

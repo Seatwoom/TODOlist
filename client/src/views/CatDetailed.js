@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { CAT_API_URL } from "../config";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { CAT_API_URL } from '../config';
 
 const Container = styled.div`
   max-width: 800px;
@@ -33,8 +33,8 @@ const CatDetailed = () => {
 
   return (
     <Container>
-      <Image src={cat.url} alt={breed?.name || "Cat"} />
-      <h3>{breed?.name || "Unknown Breed"}</h3>
+      <Image src={cat.url} alt={breed?.name || 'Cat'} />
+      <h3>{breed?.name || 'Unknown Breed'}</h3>
       {breed ? (
         <>
           <p>{breed.description}</p>

@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Input, Button, StyledLink, Container } from "../styles/styles";
-import { registerUser } from "../api/authAPI";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Input, Button, StyledLink, Container } from '../styles/styles';
+import { registerUser } from '../api/authAPI';
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async () => {
     if (!username || !password) {
-      alert("Please fill in all fields.");
+      alert('Please fill in all fields.');
       return;
     }
 
     try {
       await registerUser(username, password);
-      navigate("/login");
+      navigate('/login');
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -27,7 +27,7 @@ const Register = () => {
     <Container>
       <h2>Register</h2>
       {errorMessage && (
-        <p data-testid="error-message" style={{ color: "red" }}>
+        <p data-testid="error-message" style={{ color: 'red' }}>
           {errorMessage}
         </p>
       )}

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { SESSION_TIMEOUT } from "../config";
-import { ModalContent, ModalOverlay, Button } from "../styles/styles";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { SESSION_TIMEOUT } from '../config';
+import { ModalContent, ModalOverlay, Button } from '../styles/styles';
 
 const Session = ({ timeout = SESSION_TIMEOUT }) => {
   const [modal, setModal] = useState(false);
@@ -12,20 +12,20 @@ const Session = ({ timeout = SESSION_TIMEOUT }) => {
 
   useEffect(() => {
     if (modal) {
-      document.body.classList.add("modal-open");
+      document.body.classList.add('modal-open');
     } else {
-      document.body.classList.remove("modal-open");
+      document.body.classList.remove('modal-open');
     }
 
     return () => {
-      document.body.classList.remove("modal-open");
+      document.body.classList.remove('modal-open');
     };
   }, [modal]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("authenticated");
-    navigate("/login");
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('authenticated');
+    navigate('/login');
   }, [navigate]);
 
   const handleActivity = () => {
@@ -37,7 +37,7 @@ const Session = ({ timeout = SESSION_TIMEOUT }) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       setModal(true);
-      localStorage.removeItem("authenticated");
+      localStorage.removeItem('authenticated');
     }, timeout);
   };
 
@@ -48,12 +48,12 @@ const Session = ({ timeout = SESSION_TIMEOUT }) => {
       clearTimeout(timeoutId);
     };
 
-    const events = ["keydown", "click"];
-    if (location.pathname === "/login" || location.pathname === "/register") {
+    const events = ['keydown', 'click'];
+    if (location.pathname === '/login' || location.pathname === '/register') {
       return;
     }
 
-    window.addEventListener("resetSession", handleResetSession);
+    window.addEventListener('resetSession', handleResetSession);
     events.forEach((event) => window.addEventListener(event, handleActivity));
     resetTimeout();
 
@@ -62,12 +62,12 @@ const Session = ({ timeout = SESSION_TIMEOUT }) => {
       events.forEach((event) =>
         window.removeEventListener(event, handleActivity)
       );
-      window.removeEventListener("resetSession", handleResetSession);
+      window.removeEventListener('resetSession', handleResetSession);
     };
   }, [modal, timeout, initialized, location.pathname]);
 
   useEffect(() => {
-    if (location.pathname !== "/login" && location.pathname !== "/register") {
+    if (location.pathname !== '/login' && location.pathname !== '/register') {
       const initTimeoutId = setTimeout(() => {
         setInitialized(true);
       }, 1000);
@@ -81,7 +81,7 @@ const Session = ({ timeout = SESSION_TIMEOUT }) => {
   };
 
   useEffect(() => {
-    if (location.pathname === "/login" || location.pathname === "/register") {
+    if (location.pathname === '/login' || location.pathname === '/register') {
       setModal(false);
       setInitialized(false);
       clearTimeout(timeoutId);
@@ -90,8 +90,8 @@ const Session = ({ timeout = SESSION_TIMEOUT }) => {
 
   if (
     modal ||
-    location.pathname === "/login" ||
-    location.pathname === "/register"
+    location.pathname === '/login' ||
+    location.pathname === '/register'
   ) {
     return (
       <>

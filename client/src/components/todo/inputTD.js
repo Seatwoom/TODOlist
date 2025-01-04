@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Input, Button } from "../../styles/styles";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Input, Button } from '../../styles/styles';
 
 const Form = styled.form`
   display: flex;
@@ -8,13 +8,13 @@ const Form = styled.form`
 `;
 
 function InputTD({ addTD }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   const handleInput = (e) => {
     e.preventDefault();
     if (!value) return;
     addTD(value);
-    setValue("");
+    setValue('');
   };
 
   return (
